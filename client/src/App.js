@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import TdList from "./Components/TdList";
 
 function App() {
   const [data, setData] = React.useState(null);
@@ -9,20 +10,10 @@ function App() {
    * GET request to the express server, which returns a response
    * with the JSON data that we created in index.js
    */
-  React.useEffect(() => {
-    fetch("/api")
-      .then((response) => response.json()) // .then((res) => res.json())
-
-      .then((data) => {
-        setData(data);
-        console.log(typeof data);
-      });
-    // .then((data) => console.log(data));
-  }, []);
 
   return (
     <div className="App">
-      <p>{!data ? "Loading..." : data}</p>
+      <TdList />
     </div>
   );
 }
