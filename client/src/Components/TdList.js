@@ -40,15 +40,16 @@ const TdList = () => {
     fetch("/api")
       .then((response) => response.json()) // .then((res) => res.json())
 
-      .then((data) => {
-        data.map((todo) => {
-          const newTodo = {
-            text: todo.text,
-            done: todo.done,
-          };
+      .then(({ todos }) => {
+        todos &&
+          todos.map((todo) => {
+            const newTodo = {
+              text: todo.text,
+              done: todo.done,
+            };
 
-          newTdList.push(newTodo);
-        });
+            newTdList.push(newTodo);
+          });
       })
       .then(() => {
         setTodos(newTdList);
@@ -74,18 +75,21 @@ const TdList = () => {
 
     //find better way to do this, shouldn't have to use query selector
     // document.getElementById("todo-input").value = "";
-    setText("");
-    setTodos([newTodo, ...todos]);
 
     fetch("/api/stuff", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ todoText: newTodo.text }),
+      body: JSON.stringify(newTodo),
     })
-      .then((response) => response.json())
+      //return status ok
+      .then((response) => {
+        if (!response) {
+          alert("error");
+        }
+      });
 
-      //WRITE NEW TODO OBJECT TO JSON FILE
-      .then((data) => console.log(data));
+    setText("");
+    setTodos([newTodo, ...todos]);
   };
 
   /* 
@@ -142,24 +146,25 @@ if the text is empty, button needs to be grey
       </button>
 
       <p>
-        {todos.map((todo, i) => {
-          return (
-            <div>
-              <Todo
-                text={todo.text}
-                done={todo.done}
-                handleClick={() => {
-                  //can use i because of closure
-                  const newTodos = [...todos];
-                  newTodos[i].done = !newTodos[i].done;
+        {todos &&
+          todos.map((todo, i) => {
+            return (
+              <div>
+                <Todo
+                  text={todo.text}
+                  done={todo.done}
+                  handleClick={() => {
+                    //can use i because of closure
+                    const newTodos = [...todos];
+                    newTodos[i].done = !newTodos[i].done;
 
-                  setTodos(newTodos);
-                }}
-                handleDelete={() => handleDelete(todo)}
-              />
-            </div>
-          );
-        })}
+                    setTodos(newTodos);
+                  }}
+                  handleDelete={() => handleDelete(todo)}
+                />
+              </div>
+            );
+          })}
       </p>
     </div>
   );

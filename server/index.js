@@ -4,6 +4,9 @@ const json = require("../client/src/data.json");
 const app = express();
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const { response } = require("express");
+app.disable("etag");
+
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -14,30 +17,25 @@ const getJsonData = () => {
   return fs.readFileSync("./client/src/data.json", "utf-8");
 };
 
-app.post("/api/stuff", async (req, res) => {
-  let todo = {
-    text: req.body.todoText,
-    done: false,
-  };
-  console.log(todo.text);
+app.post("/api/stuff", (req, res) => {
   let existingJson = getJsonData();
   existingJson = JSON.parse(existingJson);
-  existingJson.todos.push(todo);
-  console.log(existingJson);
+  existingJson.todos.push(req.body);
+
   existingJson = JSON.stringify(existingJson);
-  console.log(existingJson);
 
   fs.writeFile("./client/src/data.json", existingJson, (err, data) => {
     if (err) {
       console.log(err);
+      res.send(false);
     } else {
-      console.log("File written successfully \n");
+      res.send(true);
     }
   });
 });
 
 app.get("/api", (req, res) => {
-  res.send(json.todos);
+  res.send(getJsonData());
 });
 
 app.get("/", (req, res) => {
