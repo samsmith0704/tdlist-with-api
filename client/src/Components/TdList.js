@@ -46,7 +46,7 @@ const TdList = () => {
             text: todo.text,
             done: todo.done,
           };
-          console.log(newTodo);
+
           newTdList.push(newTodo);
         });
       })
@@ -76,7 +76,16 @@ const TdList = () => {
     // document.getElementById("todo-input").value = "";
     setText("");
     setTodos([newTodo, ...todos]);
-    //console.log(todos);
+
+    fetch("/api/stuff", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ todoText: newTodo.text }),
+    })
+      .then((response) => response.json())
+
+      //WRITE NEW TODO OBJECT TO JSON FILE
+      .then((data) => console.log(data));
   };
 
   /* 

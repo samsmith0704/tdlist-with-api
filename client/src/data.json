@@ -1,12 +1,9 @@
 {
   "todos": [
-    {
-      "text": "woah",
-      "done": false
-    },
-    {
-      "text": "another",
-      "done": false
-    }
+    { "text": "woah", "done": false },
+    { "text": "another", "done": false },
+    { "text": "asd", "done": false },
+    { "text": "asfa", "done": false },
+    { "text": "gwerwg", "done": false }
   ]
 }
