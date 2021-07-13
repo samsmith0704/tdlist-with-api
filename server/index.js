@@ -17,10 +17,38 @@ const getJsonData = () => {
   return fs.readFileSync("./client/src/data.json", "utf-8");
 };
 
+app.put("/put", (req, res) => {
+  let existingJson = getJsonData();
+  existingJson = JSON.parse(existingJson);
+  let newTodos = existingJson.todos;
+
+  // let parsedBody = JSON.parse(req.body);
+  //newTodos[parsedBody.text].done = !newTodos[parsedBody.text].done;
+  newTodos.forEach((todo, index) => {
+    if (todo.text === req.body.text) {
+      newTodos[index].done = req.body.done;
+    }
+  });
+
+  existingJson.todos = newTodos;
+  existingJson = JSON.stringify(existingJson);
+
+  fs.writeFile("./client/src/data.json", existingJson, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.send(false);
+    } else {
+      res.send(true);
+    }
+  });
+});
+
+//SHOULD BE USING IDS FOR FILTER HERE
 app.delete("/delete", (req, res) => {
   let existingJson = getJsonData();
   existingJson = JSON.parse(existingJson);
 
+  //Why does this work even though obj is a string in this case?
   const newTodos = existingJson.todos.filter((obj) => {
     return obj.text !== req.body.text;
   });

@@ -164,7 +164,14 @@ if the text is empty, button needs to be grey
                     const newTodos = [...todos];
                     newTodos[i].done = !newTodos[i].done;
 
-                    setTodos(newTodos);
+                    const jsonString = JSON.stringify(newTodos[i]);
+                    fetch("/put", {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      //WHY DO YOU HAVE TO SEND THE STRINGIFIED OBJECT
+                      body: jsonString,
+                    }).then(setTodos(newTodos));
+                    console.log(jsonString);
                   }}
                   handleDelete={() => handleDelete(todo)}
                 />

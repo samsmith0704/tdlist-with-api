@@ -1,6 +1,1 @@
-{
-  "todos": [
-    { "text": "asfasfa", "done": false },
-    { "text": "asdasd", "done": false }
-  ]
-}
+{"todos":[{"text":"asfasfa","done":false}]}
