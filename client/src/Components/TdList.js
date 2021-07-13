@@ -48,7 +48,7 @@ const TdList = () => {
               done: todo.done,
             };
 
-            newTdList.push(newTodo);
+            newTdList.unshift(newTodo);
           });
       })
       .then(() => {
