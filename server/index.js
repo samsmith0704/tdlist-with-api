@@ -17,6 +17,27 @@ const getJsonData = () => {
   return fs.readFileSync("./client/src/data.json", "utf-8");
 };
 
+app.delete("/delete", (req, res) => {
+  let existingJson = getJsonData();
+  existingJson = JSON.parse(existingJson);
+
+  const newTodos = existingJson.todos.filter((obj) => {
+    return obj.text !== req.body.text;
+  });
+  console.log(newTodos);
+
+  existingJson.todos = newTodos;
+  existingJson = JSON.stringify(existingJson);
+  fs.writeFile("./client/src/data.json", existingJson, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.send(false);
+    } else {
+      res.send(true);
+    }
+  });
+});
+
 app.post("/api/stuff", (req, res) => {
   let existingJson = getJsonData();
   existingJson = JSON.parse(existingJson);

@@ -1,1 +1,6 @@
-{"todos":[{"text":"asda","done":false},{"text":"asfasfa","done":false}]}
+{
+  "todos": [
+    { "text": "asfasfa", "done": false },
+    { "text": "asdasd", "done": false }
+  ]
+}

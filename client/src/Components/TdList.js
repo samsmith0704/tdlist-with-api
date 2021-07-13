@@ -125,7 +125,13 @@ if the text is empty, button needs to be grey
     const newTodos = todos.filter((todo) => {
       return todoToDelete !== todo;
     });
-    setTodos(newTodos);
+
+    fetch("/delete", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      //WHY DO YOU HAVE TO SEND THE STRINGIFIED OBJECT
+      body: JSON.stringify(todoToDelete),
+    }).then(setTodos(newTodos));
   };
 
   const inputStyle = {
